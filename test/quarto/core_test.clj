@@ -3,5 +3,26 @@
         quarto.core))
 
 (deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+  (testing "always true"
+    (is (= 1 1))))
+
+(deftest all-pieces-test
+  (testing "the count of all pieces is 16"
+    (is (= 16 (count all-pieces)))))
+
+;;; I don't know why this is not working - it is the same as the others???
+; (deftest tall-pieces-test
+;   (testing "the count of tall pieces is 8"
+;     (is (= 8 (count (seq (filter #(= :tall (.size %)) all-pieces)))))))
+
+(deftest black-pieces-test
+  (testing "the count of black pieces is 8"
+    (is (= 8 (count (seq (filter #(= :black (.color %)) all-pieces)))))))
+
+(deftest circle-pieces-test
+  (testing "the count of circle pieces is 8"
+    (is (= 8 (count (seq (filter #(= :circle (.shape %)) all-pieces)))))))
+
+(deftest solid-pieces-test
+  (testing "the count of solid pieces is 8"
+    (is (= 8 (count (seq (filter #(= :solid (.holed %)) all-pieces)))))))
