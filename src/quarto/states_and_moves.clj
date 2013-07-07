@@ -9,7 +9,10 @@
     :unused-pieces (disj unused-pieces piece)
     :current-piece piece))
 
-; (defn make-move
+(defn legal-move? [pos-x pos-y board]
+  (nil? (get-in board [pos-x pos-y])))
+
+; (defn put-piece
 ;   [piece pos-x pos-y current-state]
   
 ;   )

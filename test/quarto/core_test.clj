@@ -29,3 +29,7 @@
   (testing "the count of solid pieces is 8"
     (is (= 8 (count (seq (filter #(= :solid (.holed %)) all-pieces)))))))
 
+(deftest legal-move-test
+  (testing "can make a move in the beginning"
+    (is true (legal-move? 0 2 (get start-state :board)))))
+
