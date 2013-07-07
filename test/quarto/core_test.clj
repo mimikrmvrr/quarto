@@ -31,5 +31,8 @@
 
 (deftest legal-move-test
   (testing "can make a move in the beginning"
-    (is true (legal-move? 0 2 (get start-state :board)))))
+    (true? (legal-move? 0 2 (get start-state :board))))
+  (testing "cannot make a move"
+    (let [board (vec (repeat dim (vec (repeat dim 1))))]
+      (false? (legal-move? 0 2 board)))))
 
