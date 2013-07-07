@@ -12,7 +12,8 @@
 (defn legal-move? [pos-x pos-y board]
   (nil? (get-in board [pos-x pos-y])))
 
-; (defn put-piece
-;   [piece pos-x pos-y current-state]
-  
-;   )
+(defn put-piece
+  [{:keys [board current-piece] :as current-state} piece pos-x pos-y]
+  (assoc current-state
+    :board (assoc-in board [pos-x pos-y] piece)
+    :current-piece nil))
