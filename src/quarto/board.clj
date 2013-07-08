@@ -27,8 +27,12 @@
   [board]
   (for [x (range dim)] (get board x)))
 
+(def columns-indexes-helper
+  (for [x (range dim)]
+    (vec (repeat dim x))))
+
 (defn columns
   [board]
   (let [y (range dim)]
-    (for [x [(vec (repeat dim 0))]]
+    (for [x columns-indexes-helper]
       (map #(get-in board [%1 %2]) y x))))
