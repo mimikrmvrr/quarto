@@ -36,3 +36,12 @@
     (let [board (vec (repeat dim (vec (repeat dim 1))))]
       (false? (legal-move? 0 2 board)))))
 
+(def test-board [[0 1 2 3]
+                 [4 5 6 7]
+                 [8 9 10 11]
+                 [12 13 14 15]])
+
+(deftest diagonals-test
+  (testing "diagonals 0 5 10 15 and 12 9 6 3"
+    (is (diagonals test-board) '((0 5 10 15) (3 6 9 12)))))
+
