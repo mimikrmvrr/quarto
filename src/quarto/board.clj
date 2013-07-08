@@ -22,3 +22,7 @@
   (let [x (range dim)]
     (for [y [(range dim) (range (- dim 1) -1 -1)]]
       (map #(get-in board [%1 %2]) x y))))
+
+(defn rows
+  [board]
+  (for [x (range dim)] (get board x)))

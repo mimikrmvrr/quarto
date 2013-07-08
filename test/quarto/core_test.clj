@@ -45,3 +45,6 @@
   (testing "diagonals 0 5 10 15 and 12 9 6 3"
     (is (diagonals test-board) '((0 5 10 15) (3 6 9 12)))))
 
+(deftest rows-test
+  (testing "the secind row is 4 5 6 7"
+    (is (rows test-board) [4 5 6 7])))
