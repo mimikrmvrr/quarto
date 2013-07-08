@@ -26,3 +26,9 @@
 (defn rows
   [board]
   (for [x (range dim)] (get board x)))
+
+(defn columns
+  [board]
+  (let [y (range dim)]
+    (for [x [(vec (repeat dim 0))]]
+      (map #(get-in board [%1 %2]) y x))))
