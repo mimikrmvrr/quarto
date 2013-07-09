@@ -10,6 +10,8 @@
         holed [:hollow :solid]]
     (Piece. shape size color holed)))
 
+(def properties [:shape :size :color :holed])
+
 (def dim 4)
 
 (def start-state
@@ -36,3 +38,16 @@
   (let [y (range dim)]
     (for [x columns-indexes-helper]
       (map #(get-in board [%1 %2]) y x))))
+
+(defn common-properties
+  [pieces]
+  (let [piece (get pieces 0)]
+    (into #{}
+      (for [property properties
+            :when (= dim (count (seq (filter #(= (property piece) (property %)) pieces))))]
+        property))))
+
+(defn winning-combination?
+  [pieces]
+  (and (not-any? nil? pieces)
+       (seq (common-properties pieces))))

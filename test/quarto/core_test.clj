@@ -52,3 +52,7 @@
 (deftest columns-test
   (testing "the first column is 0 4 8 12"
     (is (columns test-board) [0 4 8 12])))
+
+(deftest winning-combination-test
+  (testing "if there is a nil in combination it is not winning"
+    (false? (winning-combination? (diagonals start-state)))))

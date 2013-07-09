@@ -17,3 +17,4 @@
   (assoc current-state
     :board (assoc-in board [pos-x pos-y] piece)
     :current-piece nil))
+
