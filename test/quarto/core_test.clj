@@ -56,3 +56,8 @@
 (deftest winning-combination-test
   (testing "if there is a nil in combination it is not winning"
     (false? (winning-combination? (diagonals start-state)))))
+;;;TODO: add a test for actually winning combination
+
+(deftest win?-test
+  (testing "the start state is not winning"
+    (false? (win? start-state))))

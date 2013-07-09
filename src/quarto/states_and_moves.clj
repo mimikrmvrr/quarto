@@ -1,6 +1,5 @@
 (ns quarto.states_and_moves
-  (require [quarto
-            [board]]))
+  (:use quarto.board))
 
 
 (defn choose-piece-for-other-player
@@ -18,3 +17,9 @@
     :board (assoc-in board [pos-x pos-y] piece)
     :current-piece nil))
 
+(defn win?
+  [{:keys [board]}]
+  (some true?
+    '((winning-combination? (rows board))
+      (winning-combination? (columns board))
+      (winning-combination? (diagonals board)))))
