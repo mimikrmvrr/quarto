@@ -61,3 +61,7 @@
 (deftest win?-test
   (testing "the start state is not winning"
     (false? (win? start-state))))
+
+(deftest all-filled-test
+  (testing "the start state is not filled"
+    (false? (all-filled? start-state))))

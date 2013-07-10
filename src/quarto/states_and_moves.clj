@@ -23,3 +23,7 @@
     '((winning-combination? (rows board))
       (winning-combination? (columns board))
       (winning-combination? (diagonals board)))))
+
+(defn all-filled?
+  [{:keys [board]}]
+  (not-any? nil? (flatten board)))
