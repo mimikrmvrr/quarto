@@ -1,8 +1,8 @@
 (ns quarto.core
   (:gen-class)
-  (:require [quarto
-              [board] 
-              [states_and_moves]]))
+  (:use quarto.board 
+        quarto.states_and_moves
+        quarto.gui))
 
 ; (def dim 4)
 
@@ -32,8 +32,21 @@
   
 ;   )
 
+(defn play
+  [player1 player2]
+    (loop [current-player player1
+           next-turn player2
+           state start-state]
+      ; (if (= state start-state)
+      ;   )
+      (cond
+        (win? state) player2
+        (all-filled? state) :tie
+        ; :else (recur r (action p state))
+        )))
+
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  (run))
