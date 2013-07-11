@@ -2,7 +2,7 @@
   (:use quarto.board) 
   (:import
     (java.awt Color Dimension Image BorderLayout)
-    (javax.swing JPanel JFrame ImageIcon JButton JLabel JTextField JOptionPane)
+    (javax.swing JPanel JFrame ImageIcon JButton JLabel JTextField JOptionPane Icon)
     (java.awt.event ActionListener MouseListener MouseMotionListener)
     javax.imageio.ImageIO
     java.io.File)
@@ -65,6 +65,7 @@
     (doto (JFrame. "Quarto Game")
       (.add panel BorderLayout/NORTH)
       (.add game-panel BorderLayout/CENTER)
+      (.add (JButton. (ImageIcon. (io/resource "p0e.png"))))
       (.pack)
       (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
       (.setVisible true)
