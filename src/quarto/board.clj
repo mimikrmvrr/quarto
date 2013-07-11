@@ -1,16 +1,16 @@
 (ns quarto.board)
 
 
-(defrecord Piece[shape size color holed])
+(defrecord Piece[color shape size holed])
 
 (def all-pieces
-  (for [shape [:square :circle]
-        size  [:tall :short]
-        color [:black :white]        
+  (for [color [:black :white]
+        shape [:square :circle]
+        size  [:tall :short]                
         holed [:hollow :solid]]
-    (Piece. shape size color holed)))
+    (Piece. color shape size holed)))
 
-(def properties [:shape :size :color :holed])
+(def properties [:color :shape :size :holed])
 
 (def dim 4)
 

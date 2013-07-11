@@ -63,5 +63,5 @@
       (.pack)
       (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
       (.setVisible true)
-      (.setSize (Dimension. 800 600)))))
+      (.setSize (Dimension. 830 555)))))
     ; (.addActionListener submit-button frame)))
