@@ -14,6 +14,22 @@
 
 (def dim 4)
 
+(def property-number
+  {:black 8
+   :circle 4
+   :short 2
+   :hollow 1
+   :white 0
+   :square 0
+   :tall 0
+   :solid 0})
+
+(defn piece-id
+  [piece]
+  (apply +
+    (for [property properties]
+      (property-number (property piece)))))
+
 (def start-state
   {:board (vec (repeat dim (vec (repeat dim nil))))
    :unused-pieces (set all-pieces)

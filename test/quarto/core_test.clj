@@ -65,3 +65,10 @@
 (deftest all-filled-test
   (testing "the start state is not filled"
     (false? (all-filled? start-state))))
+
+
+(def test-piece (quarto.board.Piece. :white :circle :tall :hollow))
+
+(deftest piece-id-test
+  (testing "[:white :circle :tall :holllow] is with id 5"
+    (= (piece-id test-piece) 5)))
