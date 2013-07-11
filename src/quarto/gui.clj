@@ -12,6 +12,9 @@
 
 (def img-url (io/resource "gameboard.png"))
 
+; (def piece-images
+;   {:p0 })
+
 (def image-background (.getImage (ImageIcon. img-url)))
 
 (def game-panel

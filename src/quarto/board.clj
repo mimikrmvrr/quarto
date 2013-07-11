@@ -5,8 +5,8 @@
 
 (def all-pieces
   (for [color [:black :white]
-        shape [:square :circle]
-        size  [:tall :short]                
+        shape [:circle :square]
+        size  [:short :tall]                
         holed [:hollow :solid]]
     (Piece. color shape size holed)))
 
