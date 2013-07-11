@@ -1,7 +1,5 @@
 (ns quarto.gui
-  ; (:use 
-  ;   quarto.states-and-moves
-  ;   quarto.biard)
+  (:use quarto.board) 
   (:import
     (java.awt Color Dimension Image BorderLayout)
     (javax.swing JPanel JFrame ImageIcon JButton JLabel JTextField JOptionPane)
@@ -11,6 +9,10 @@
   (:require [clojure.java.io :as io]))
 
 (def img-url (io/resource "gameboard.png"))
+
+(defn piece-url 
+  [piece]
+  (io/resource (str "p" (piece-id piece) "e.png")))
 
 ; (def piece-images
 ;   {:p0 })

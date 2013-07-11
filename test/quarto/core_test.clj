@@ -2,7 +2,8 @@
   (:use clojure.test
         quarto.core
         quarto.board
-        quarto.states_and_moves))
+        quarto.states_and_moves
+        quarto.gui))
 
 (deftest a-test
   (testing "always true"
@@ -71,4 +72,7 @@
 
 (deftest piece-id-test
   (testing "[:white :circle :tall :holllow] is with id 5"
-    (= (piece-id test-piece) 5)))
+    (= (piece-id test-piece) 5))
+  (testing "test-piece-url is p5e.png"
+    (is (piece-url test-piece) "p5e.png")))
+
