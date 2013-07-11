@@ -14,7 +14,7 @@
 
 (def image-background (.getImage (ImageIcon. img-url)))
 
-(def panel 
+(def game-panel
   (proxy [JPanel] []
     (paintComponent [g]
       (proxy-super paintComponent g)
@@ -22,7 +22,7 @@
 
 (defn run [] 
   (doto (JFrame. "Quarto Game")
-    (.setContentPane panel)
+    (.setContentPane game-panel)
     (.setSize (Dimension. 800 600))
     (.setVisible true)))
 
@@ -42,24 +42,26 @@
   (.getText text-filed))
 
 (defn names-window []
-  (let [name-field1 (JTextField. "Player1" 20)
-        name-field2 (JTextField. "Player2" 20)
-        submit-button (JButton. "OK")
-        panel (JPanel.)
-        frame (proxy [JFrame ActionListener] []
-                (actionPerformed [e]
-                  (if (= JOptionPane/YES_OPTION (JOptionPane/showConfirmDialog nil (str "Ready to start a game?")))
-                    (run))))]
+  (let [panel (JPanel.)]
+        ; name-field1 (JTextField. "Player1" 20)
+        ; name-field2 (JTextField. "Player2" 20)
+        ; submit-button (JButton. "OK")
+        ; frame (proxy [JFrame ActionListener] []
+        ;         (actionPerformed [e]
+        ;           (if (= JOptionPane/YES_OPTION (JOptionPane/showConfirmDialog nil (str "Ready to start a game?")))
+        ;             (run))))]
     (doto panel
-      (.add (JLabel. "First player:"))
-      (.add name-field1)
-      (.add (JLabel. "Second player:"))
-      (.add name-field2))
-    (doto frame
-      (.add panel BorderLayout/CENTER)
-      (.add submit-button BorderLayout/SOUTH)
+      (.add (JLabel. "Some text")))
+      ; (.add (JLabel. "First player:"))
+      ; (.add name-field1)
+      ; (.add (JLabel. "Second player:"))
+      ; (.add name-field2))
+      ; (.add submit-button)
+    (doto (JFrame. "Quarto Game")
+      (.add panel BorderLayout/NORTH)
+      (.add game-panel BorderLayout/CENTER)
       (.pack)
       (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
       (.setVisible true)
-      (.setSize (Dimension. 800 600)))
-    (.addActionListener submit-button frame)))
+      (.setSize (Dimension. 800 600)))))
+    ; (.addActionListener submit-button frame)))
