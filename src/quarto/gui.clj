@@ -12,7 +12,7 @@
 
 (def img-url (io/resource "gameboard.png"))
 
-(def image-background (.getImage (ImageIcon. (io/resource "gameboard.png"))))
+(def image-background (.getImage (ImageIcon. img-url)))
 
 (def panel 
   (proxy [JPanel] []
