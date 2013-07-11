@@ -3,8 +3,8 @@
   ;   quarto.states-and-moves
   ;   quarto.biard)
   (:import
-    (java.awt Color Dimension Image)
-    (javax.swing JPanel JFrame ImageIcon)
+    (java.awt Color Dimension Image BorderLayout)
+    (javax.swing JPanel JFrame ImageIcon JButton JLabel JTextField JOptionPane)
     (java.awt.event ActionListener MouseListener MouseMotionListener)
     javax.imageio.ImageIO
     java.io.File)
@@ -36,3 +36,30 @@
 
 (defn get-chosen-piece []
   nil)
+
+(defn get-name 
+  [text-filed]
+  (.getText text-filed))
+
+(defn names-window []
+  (let [name-field1 (JTextField. "Player1" 20)
+        name-field2 (JTextField. "Player2" 20)
+        submit-button (JButton. "OK")
+        panel (JPanel.)
+        frame (proxy [JFrame ActionListener] []
+                (actionPerformed [e]
+                  (if (= JOptionPane/YES_OPTION (JOptionPane/showConfirmDialog nil (str "Ready to start a game?")))
+                    (run))))]
+    (doto panel
+      (.add (JLabel. "First player:"))
+      (.add name-field1)
+      (.add (JLabel. "Second player:"))
+      (.add name-field2))
+    (doto frame
+      (.add panel BorderLayout/CENTER)
+      (.add submit-button BorderLayout/SOUTH)
+      (.pack)
+      (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
+      (.setVisible true)
+      (.setSize (Dimension. 800 600)))
+    (.addActionListener submit-button frame)))
