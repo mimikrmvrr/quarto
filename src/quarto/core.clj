@@ -50,5 +50,6 @@
   "I don't do a whole lot ... yet."
   [& args]
   (do
-    (names-window)))
+    (start-game)))
+   ; (names-window)))
     ; (run)))
