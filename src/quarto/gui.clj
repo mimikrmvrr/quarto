@@ -10,13 +10,18 @@
     java.lang.Math)
   (:require [clojure.java.io :as io]))
 
+
+(def message-label 
+  (doto (JLabel.)
+    (.setText "Some Text")))
+
+
 (def img-url (io/resource "gameboard.png"))
 
 (defn piece-url 
   [piece]
   (io/resource (str "p" (.id piece) "e.png")))
 
-(def selected-piece (get @state :current-piece))
 
 (def image-background (.getImage (ImageIcon. img-url)))
 
@@ -25,6 +30,20 @@
     (paintComponent [g]
       (proxy-super paintComponent g)
       (.drawImage g image-background 0 0 (.getWidth this) (.getHeight this) nil))))
+
+(def panel 
+  (doto (JPanel.)
+     (.add message-label)))
+
+(def frame 
+  (doto (JFrame. "Quarto Game")
+     (.add panel BorderLayout/NORTH)
+     (.add game-panel BorderLayout/CENTER)      
+     (.pack)
+     (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
+     (.setVisible true)
+     (.setSize (Dimension. 830 555))))
+
 
 ; (defn run [] 
 ;   (doto (JFrame. "Quarto Game")
@@ -46,14 +65,20 @@
     (.setBorderPainted false)
     (.setName (str (.id piece)))))
 
+(defn disable-button [button]
+    (do
+      (.setEnabled button false)
+      (.setVisible button false)))
+
 (defn move-to-selected [event-source]
   (let [id (Integer. (.getName event-source))
         unused (get @state :unused-pieces)
-        coincidence-coll (filter #(= id (.id %)) unused)
-        moved-piece (get coincidence-coll 0)]
-    (do ;(prn (str (.id moved-piece)))
+        coincidence-coll (vec (filter #(= id (.id %)) unused))
+        moved-piece (coincidence-coll 0)]
+    (do (prn moved-piece)
+        (disable-button event-source)
         (select-piece moved-piece)
-       ; (start-game)
+        (.. frame getContentPane (add (select-piece-button moved-piece)))
         (prn "ok"))))
 
 (def choose-piece 
@@ -63,9 +88,6 @@
                                     (do (prn "select")
                                         (move-to-selected (.getSource event))))))))
 
-(def message-label 
-  (doto (JLabel.)
-    (.setText "Some Text")))
 
 (defn place-piece
   [piece]
@@ -76,13 +98,17 @@
     (.setName (str (.id piece)))
     (.addActionListener choose-piece)))
 
-(defn unused-pieces-buttons []
+(def unused-pieces-buttons 
   (map place-piece (get @state :unused-pieces)))
 
-     
-
-(defn end 
-  [win? winner]
-  (if win? 
-    (.setText message-label (str (name winner) " won!")
-    (.settext message-label "Game over without winner!"))))
+(defn window []
+  (let [
+        ; button (doto (JButton. (ImageIcon. (io/resource "p0e.png")))
+        ;          (.setBounds 520 135 50 75)
+        ;          (.setBackground (Color. 241 221 196 255))
+        ;          (.setBorderPainted false))
+        ]
+    (if-not (nil? selected-piece)
+      (.. frame getContentPane (add (select-piece-button selected-piece))))
+    (for [piece-button unused-pieces-buttons]
+      (.. frame getContentPane (add piece-button)))))

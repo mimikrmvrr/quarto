@@ -11,6 +11,9 @@
      :unused-pieces (set all-pieces)
      :current-piece nil}))
 
+
+(def selected-piece (get @state :current-piece))
+
 (defn select-piece
   [piece]
   (let [unused-pieces (get @state :unused-pieces)]
