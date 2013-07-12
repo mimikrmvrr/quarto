@@ -36,13 +36,6 @@
 (defn coord-y [id]
   (+ 150 (* (Math/round (Math/floor (/ id 4))) 75)))
 
-(defn place-piece
-  [piece]
-  (doto (JButton. (ImageIcon. (piece-url piece)))
-    (.setBounds (coord-x (.id piece)) (coord-y (.id piece)) 50 75)
-    (.setBackground (Color. 241 221 196 255))
-    (.setBorderPainted false)
-    (.setName (str (.id piece)))))
 
 (defn select-piece-button [piece]
   (doto (JButton. (ImageIcon. (piece-url piece)))
@@ -51,24 +44,39 @@
     (.setBorderPainted false)
     (.setName (str (.id piece)))))
 
-(defn unused-pieces-buttons []
-  (map place-piece (get @state :unused-pieces)))
-
 (def selected-piece (get @state :current-piece))
 
 (defn move-to-selected [event-source]
   (let [id (Integer. (.getName event-source))
-        moved-piece (get (map #(.id %) (get @state :unused-pieces)) id)]
-    (select-piece moved-piece)))
+        unused (get @state :unused-pieces)
+        coincidence-coll (filter #(= id (.id %)) unused)
+        moved-piece (get coincidence-coll 0)]
+    (do ;(prn (str (.id moved-piece)))
+        (select-piece moved-piece)
+        (prn "ok"))))
 
 (def choose-piece 
   (proxy [ActionListener] []
-    (actionPerformed [event] (if-not (selected-piece)
-                               (move-to-selected (.getSource event))))))
+    (actionPerformed [event] (do (prn "action!")
+                                 (if (nil? selected-piece)
+                                    (do (prn "select")
+                                        (move-to-selected (.getSource event))))))))
 
 (def message-label 
   (doto (JLabel.)
     (.setText "Some Text")))
+
+(defn place-piece
+  [piece]
+  (doto (JButton. (ImageIcon. (piece-url piece)))
+    (.setBounds (coord-x (.id piece)) (coord-y (.id piece)) 50 75)
+    (.setBackground (Color. 241 221 196 255))
+    (.setBorderPainted false)
+    (.setName (str (.id piece)))
+    (.addActionListener choose-piece)))
+
+(defn unused-pieces-buttons []
+  (map place-piece (get @state :unused-pieces)))
 
 (defn start-game []
   (let [panel (doto (JPanel.)
