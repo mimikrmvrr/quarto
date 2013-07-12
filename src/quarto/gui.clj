@@ -63,7 +63,8 @@
 
 (def choose-piece 
   (proxy [ActionListener] []
-    (actionPerformed [event] (move-to-selected (.getSource event)))))
+    (actionPerformed [event] (if-not (selected-piece)
+                               (move-to-selected (.getSource event))))))
 
 (def message-label 
   (doto (JLabel.)

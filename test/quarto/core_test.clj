@@ -30,9 +30,15 @@
   (testing "the count of solid pieces is 8"
     (is (= 8 (count (seq (filter #(= :solid (.holed %)) all-pieces)))))))
 
+(def start-state
+  (atom 
+    {:board (vec (repeat dim (vec (repeat dim nil))))
+     :unused-pieces (set all-pieces)
+     :current-piece nil}))
+
 (deftest legal-move-test
   (testing "can make a move in the beginning"
-    (true? (legal-move? 0 2 (get start-state :board))))
+    (true? (legal-move? 0 2 (get @start-state :board))))
   (testing "cannot make a move"
     (let [board (vec (repeat dim (vec (repeat dim 1))))]
       (false? (legal-move? 0 2 board)))))
@@ -56,16 +62,16 @@
 
 (deftest winning-combination-test
   (testing "if there is a nil in combination it is not winning"
-    (false? (winning-combination? (diagonals start-state)))))
+    (false? (winning-combination? (diagonals (get @start-state :board))))))
 ;;;TODO: add a test for actually winning combination
 
 (deftest win?-test
   (testing "the start state is not winning"
-    (false? (win? start-state))))
+    (false? (win?))))
 
 (deftest all-filled-test
   (testing "the start state is not filled"
-    (false? (all-filled? start-state))))
+    (false? (all-filled?))))
 
 
 (def test-piece (quarto.board.Piece. :white :circle :tall :hollow 5))
