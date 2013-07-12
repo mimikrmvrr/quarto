@@ -15,8 +15,8 @@
 (def img-url (io/resource "gameboard.png"))
 
 (defn piece-url 
-  [piece-id]
-  (io/resource (str "p" piece-id "e.png")))
+  [piece]
+  (io/resource (str "p" (.id piece) "e.png")))
 
 ; (def piece-images
 ;   {:p0 })
@@ -35,27 +35,34 @@
     (.setSize (Dimension. 800 600))
     (.setVisible true)))
 
-
 (defn get-name 
   [text-filed]
   (.getText text-filed))
 
-(defn coord-x [piece-id]
-  (+ (* (mod piece-id 4) 60) 520))
+(defn coord-x [id]
+  (+ (* (mod id 4) 60) 520))
 
-(defn coord-y [piece-id]
-  (+ 150 (* (Math/round (Math/floor (/ piece-id 4))) 75)))
+(defn coord-y [id]
+  (+ 150 (* (Math/round (Math/floor (/ id 4))) 75)))
 
 (defn place-piece
-  [piece-id]
-  (doto (JButton. (ImageIcon. (piece-url piece-id)))
-    (.setBounds (coord-x piece-id) (coord-y piece-id) 50 75)
+  [piece]
+  (doto (JButton. (ImageIcon. (piece-url piece)))
+    (.setBounds (coord-x (.id piece)) (coord-y (.id piece)) 50 75)
     (.setBackground (Color. 241 221 196 255))
-    (.setBorderPainted false)))
+    (.setBorderPainted false)
+    (.setName (str (.id piece)))))
 
 (defn unused-pieces-buttons
   [{:keys [unused-pieces]}]
-  (map #(place-piece (piece-id %)) unused-pieces))
+  (map place-piece unused-pieces))
+
+(defn move-to-selected [event-source]
+  (Integer. (.getName event-source)))
+
+(def choose-piece 
+  (proxy [ActionListener] []
+    (actionPerformed [event] (move-to-selected (.getSource event)))))
 
 (defn names-window []
   (let [panel (doto (JPanel.)

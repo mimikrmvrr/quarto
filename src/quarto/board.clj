@@ -1,18 +1,7 @@
 (ns quarto.board)
 
 
-(defrecord Piece[color shape size holed])
-
-(def all-pieces
-  (for [color [:black :white]
-        shape [:circle :square]
-        size  [:short :tall]                
-        holed [:hollow :solid]]
-    (Piece. color shape size holed)))
-
-(def properties [:color :shape :size :holed])
-
-(def dim 4)
+(defrecord Piece[color shape size holed id])
 
 (def property-number
   {:black 8
@@ -24,11 +13,25 @@
    :tall 0
    :solid 0})
 
-(defn piece-id
-  [piece]
-  (apply +
-    (for [property properties]
-      (property-number (property piece)))))
+(def all-pieces
+  (for [color [:black :white]
+        shape [:circle :square]
+        size  [:short :tall]                
+        holed [:hollow :solid]]
+    (Piece. color shape size holed (+ (property-number color)
+                                      (property-number shape)
+                                      (property-number size)
+                                      (property-number holed)))))
+
+(def properties [:color :shape :size :holed])
+
+(def dim 4)
+
+
+
+; (defn set-id
+;   [piece-properties]
+;   (apply + (map property-number piece-properties)))
 
 (def start-state
   {:board (vec (repeat dim (vec (repeat dim nil))))

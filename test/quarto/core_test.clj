@@ -68,15 +68,15 @@
     (false? (all-filled? start-state))))
 
 
-(def test-piece (quarto.board.Piece. :white :circle :tall :hollow))
+(def test-piece (quarto.board.Piece. :white :circle :tall :hollow 5))
 
 (deftest piece-id-test
-  (testing "[:white :circle :tall :holllow] is with id 5"
-    (= (piece-id test-piece) 5))
+  ; (testing "[:white :circle :tall :holllow] is with id 5"
+  ;   (= (piece-id test-piece) 5))
   (testing "test-piece-url is p5e.png"
-    (is (piece-url (piece-id test-piece)) "p5e.png")))
+    (is (piece-url test-piece) "p5e.png")))
 
 (deftest piece-place-test
   (testing "test-piece is with delta-x 50 and delta-y 75"
-    (and (= (coord-x (piece-id test-piece)) 570)
-         (= (coord-y (piece-id test-piece)) 285))))
+    (and (= (coord-x (.id test-piece)) 570)
+         (= (coord-y (.id test-piece)) 285))))
