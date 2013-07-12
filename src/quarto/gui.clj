@@ -1,8 +1,6 @@
 (ns quarto.gui
   (:use quarto.board
         quarto.states_and_moves)
-        ; (clojure.contrib
-        ;   [swing-utils :only (add-action-listener)])) 
   (:import
     (java.awt Color Dimension Image BorderLayout)
     (javax.swing JPanel JFrame ImageIcon JButton JLabel JTextField JOptionPane Icon)
@@ -18,9 +16,6 @@
   [piece]
   (io/resource (str "p" (.id piece) "e.png")))
 
-; (def piece-images
-;   {:p0 })
-
 (def image-background (.getImage (ImageIcon. img-url)))
 
 (def game-panel
@@ -29,15 +24,11 @@
       (proxy-super paintComponent g)
       (.drawImage g image-background 0 0 (.getWidth this) (.getHeight this) nil))))
 
-(defn run [] 
-  (doto (JFrame. "Quarto Game")
-    (.setContentPane game-panel)
-    (.setSize (Dimension. 800 600))
-    (.setVisible true)))
-
-(defn get-name 
-  [text-filed]
-  (.getText text-filed))
+; (defn run [] 
+;   (doto (JFrame. "Quarto Game")
+;     (.setContentPane game-panel)
+;     (.setSize (Dimension. 800 600))
+;     (.setVisible true)))
 
 (defn coord-x [id]
   (+ (* (mod id 4) 60) 520))
@@ -53,22 +44,34 @@
     (.setBorderPainted false)
     (.setName (str (.id piece)))))
 
-(defn unused-pieces-buttons
-  [{:keys [unused-pieces]}]
-  (map place-piece unused-pieces))
+(defn select-piece-button [piece]
+  (doto (JButton. (ImageIcon. (piece-url piece)))
+    (.setBounds 640 60 50 75)
+    (.setBackground (Color. 241 221 196 255))
+    (.setBorderPainted false)
+    (.setName (str (.id piece)))))
+
+(defn unused-pieces-buttons []
+  (map place-piece (get @state :unused-pieces)))
+
+(def selected-piece (get @state :current-piece))
 
 (defn move-to-selected [event-source]
   (let [id (Integer. (.getName event-source))
-        moved-piece (get (map #(.id %) unused-pieces) id)]
-    (choose-piece-for-onother-player moved-piece)))
+        moved-piece (get (map #(.id %) (get @state :unused-pieces)) id)]
+    (select-piece moved-piece)))
 
 (def choose-piece 
   (proxy [ActionListener] []
     (actionPerformed [event] (move-to-selected (.getSource event)))))
 
-(defn names-window []
+(def message-label 
+  (doto (JLabel.)
+    (.setText "Some Text")))
+
+(defn start-game []
   (let [panel (doto (JPanel.)
-                (.add (JLabel. "Some text")))
+                (.add message-label))
         button (doto (JButton. (ImageIcon. (io/resource "p0e.png")))
                  (.setBounds 520 135 50 75)
                  (.setBackground (Color. 241 221 196 255))
@@ -80,27 +83,14 @@
                 (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
                 (.setVisible true)
                 (.setSize (Dimension. 830 555)))]
-        ; name-field1 (JTextField. "Player1" 20)
-        ; name-field2 (JTextField. "Player2" 20)
-        ; submit-button (JButton. "OK")
-        ; frame (proxy [JFrame ActionListener] []
-        ;         (actionPerformed [e]
-        ;           (if (= JOptionPane/YES_OPTION (JOptionPane/showConfirmDialog nil (str "Ready to start a game?")))
-        ;             (run))))]
-    ; (doto panel
-    ;   (.add (JLabel. "Some text")))
-      ; (.add (JLabel. "First player:"))
-      ; (.add name-field1)
-      ; (.add (JLabel. "Second player:"))
-      ; (.add name-field2))
-      ; (.add submit-button)
-    ; (doto (JFrame. "Quarto Game")
-    ;   (.add panel BorderLayout/NORTH)
-      (for [piece-button (unused-pieces-buttons start-state)]
-        (.. frame getContentPane (add piece-button)))))
-      ; (.add game-panel BorderLayout/CENTER)      
-      ; (.pack)
-      ; (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
-      ; (.setVisible true)
-      ; (.setSize (Dimension. 830 555)))))
-    ; (.addActionListener submit-button frame)))
+    (for [piece-button (unused-pieces-buttons)]
+      (.. frame getContentPane (add piece-button)))
+    (if (selected-piece)
+      (.. frame getContentPane (add select-piece-button)))))
+     
+
+(defn end 
+  [win? winner]
+  (if win? 
+    (.setText message-label (str (name winner) " won!")
+    (.settext message-label "Game over without winner!"))))

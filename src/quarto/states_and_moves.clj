@@ -1,49 +1,54 @@
 (ns quarto.states_and_moves
-  (:use quarto.board
-        quarto.player))
+  (:use quarto.board))
 
 (def max-moves (count all-pieces))
 
 (def max-moves-from-one-player (/ max-moves 2))
 
-(defn choose-piece-for-other-player
-  [{:keys [unused-pieces current-piece] :as current-state} piece]
-  (assoc current-state
-    :unused-pieces (disj unused-pieces piece)
-    :current-piece piece))
+(def state
+  (atom 
+    {:board (vec (repeat dim (vec (repeat dim nil))))
+     :unused-pieces (set all-pieces)
+     :current-piece nil}))
+
+(defn select-piece
+  [piece]
+  (let [unused-pieces (get @state :unused-pieces)]
+    (swap! state #(assoc % :current-piece piece))
+    (swap! state #(assoc % :unused-pieces (disj (set unused-pieces) piece)))))
+  ; [{:keys [unused-pieces current-piece] :as current-state} piece]
+  ; (assoc current-state
+    ; :unused-pieces (disj unused-pieces piece)
+  ;   :current-piece piece))
 
 (defn legal-move? [pos-x pos-y board]
   (nil? (get-in board [pos-x pos-y])))
 
 (defn put-piece
-  [{:keys [board current-piece] :as current-state} piece pos-x pos-y]
-  (assoc current-state
-    :board (assoc-in board [pos-x pos-y] piece)
-    :current-piece nil))
+  [piece pos-x pos-y]
+  (let [board (get @state :board)]
+    (when (legal-move? pos-x pos-y board)
+      (swap! state #(assoc % :current-piece nil))
+      (swap! state #(assoc % :board (assoc-in board [pos-x pos-y] piece))))))
+  ; (assoc current-state
+  ;   :board (assoc-in board [pos-x pos-y] piece)
+  ;   :current-piece nil))
 
-(defn win?
-  [{:keys [board]}]
-  (some true?
-    '((winning-combination? (rows board))
-      (winning-combination? (columns board))
-      (winning-combination? (diagonals board)))))
+(defn win? []
+  (let [board [get @state :board]]
+    (some true?
+      '((winning-combination? (rows board))
+        (winning-combination? (columns board))
+        (winning-combination? (diagonals board))))))
 
-(defn all-filled?
-  [{:keys [board]}]
-  (not-any? nil? (flatten board)))
+(defn all-filled? []
+  (let [board (get @state :board)]
+    (not-any? nil? (flatten board))))
 
 
 (defn get-x [] nil)
 (defn get-y [] nil)
 (defn get-chosen-piece [] nil)
 
-(defrecord Person [name]
-  Player  
-  (make-move [this {:keys [current-piece] :as current-state}]
-    (if current-piece
-      (let [state-after-move (put-piece current-state current-piece (get-x) (get-y))
-            piece (get-chosen-piece state-after-move)]
-            (choose-piece-for-other-player state-after-move piece))
-      (let [piece (get-chosen-piece current-state)]
-        (choose-piece-for-other-player current-state piece)))))
 
+;;;????????whatttt

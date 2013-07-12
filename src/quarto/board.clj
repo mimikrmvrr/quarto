@@ -1,6 +1,6 @@
 (ns quarto.board)
 
-
+;==========pieces=======
 (defrecord Piece[color shape size holed id])
 
 (def property-number
@@ -25,18 +25,8 @@
 
 (def properties [:color :shape :size :holed])
 
+;=========board===============
 (def dim 4)
-
-
-
-; (defn set-id
-;   [piece-properties]
-;   (apply + (map property-number piece-properties)))
-
-(def start-state
-  {:board (vec (repeat dim (vec (repeat dim nil))))
-   :unused-pieces (set all-pieces)
-   :current-piece nil})
 
 (defn diagonals
   [board]
