@@ -84,10 +84,10 @@
                 (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
                 (.setVisible true)
                 (.setSize (Dimension. 830 555)))]
+    (if-not (nil? selected-piece)
+      (.. frame getContentPane (add select-piece-button)))
     (for [piece-button (unused-pieces-buttons)]
-      (.. frame getContentPane (add piece-button)))
-    (if (selected-piece)
-      (.. frame getContentPane (add select-piece-button)))))
+      (.. frame getContentPane (add piece-button)))))
      
 
 (defn end 
