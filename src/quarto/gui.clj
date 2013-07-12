@@ -50,7 +50,8 @@
   (let [panel (JPanel.)
         button (doto (JButton. (ImageIcon. (io/resource "p0e.png")))
                ; (.setSize (Dimension. 50 75)))]
-                (.setBounds 520 135 50 75))]
+                (.setBounds 520 135 50 75)
+                (.setBackground (Color. 241 221 196 255)))]
         ; name-field1 (JTextField. "Player1" 20)
         ; name-field2 (JTextField. "Player2" 20)
         ; submit-button (JButton. "OK")
