@@ -58,11 +58,19 @@
   (map #(place-piece (piece-id %)) unused-pieces))
 
 (defn names-window []
-  (let [panel (JPanel.)
+  (let [panel (doto (JPanel.)
+                (.add (JLabel. "Some text")))
         button (doto (JButton. (ImageIcon. (io/resource "p0e.png")))
                  (.setBounds 520 135 50 75)
                  (.setBackground (Color. 241 221 196 255))
-                 (.setBorderPainted false))]
+                 (.setBorderPainted false))
+        frame (doto (JFrame. "Quarto Game")
+                (.add panel BorderLayout/NORTH)
+                (.add game-panel BorderLayout/CENTER)      
+                (.pack)
+                (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
+                (.setVisible true)
+                (.setSize (Dimension. 830 555)))]
         ; name-field1 (JTextField. "Player1" 20)
         ; name-field2 (JTextField. "Player2" 20)
         ; submit-button (JButton. "OK")
@@ -70,19 +78,20 @@
         ;         (actionPerformed [e]
         ;           (if (= JOptionPane/YES_OPTION (JOptionPane/showConfirmDialog nil (str "Ready to start a game?")))
         ;             (run))))]
-    (doto panel
-      (.add (JLabel. "Some text")))
+    ; (doto panel
+    ;   (.add (JLabel. "Some text")))
       ; (.add (JLabel. "First player:"))
       ; (.add name-field1)
       ; (.add (JLabel. "Second player:"))
       ; (.add name-field2))
       ; (.add submit-button)
-    (doto (JFrame. "Quarto Game")
-      (.add panel BorderLayout/NORTH)
-      (.add button)
-      (.add game-panel BorderLayout/CENTER)      
-      (.pack)
-      (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
-      (.setVisible true)
-      (.setSize (Dimension. 830 555)))))
+    ; (doto (JFrame. "Quarto Game")
+    ;   (.add panel BorderLayout/NORTH)
+      (for [piece-button (unused-pieces-buttons start-state)]
+        (.. frame getContentPane (add piece-button)))))
+      ; (.add game-panel BorderLayout/CENTER)      
+      ; (.pack)
+      ; (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
+      ; (.setVisible true)
+      ; (.setSize (Dimension. 830 555)))))
     ; (.addActionListener submit-button frame)))
