@@ -1,7 +1,6 @@
 (ns quarto.states_and_moves
   (:use quarto.board
-        quarto.player
-        quarto.gui))
+        quarto.player))
 
 (def max-moves (count all-pieces))
 
@@ -33,6 +32,10 @@
   [{:keys [board]}]
   (not-any? nil? (flatten board)))
 
+
+(defn get-x [] nil)
+(defn get-y [] nil)
+(defn get-chosen-piece [] nil)
 
 (defrecord Person [name]
   Player  

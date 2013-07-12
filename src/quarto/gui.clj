@@ -1,18 +1,22 @@
 (ns quarto.gui
-  (:use quarto.board) 
+  (:use quarto.board
+        quarto.states_and_moves)
+        ; (clojure.contrib
+        ;   [swing-utils :only (add-action-listener)])) 
   (:import
     (java.awt Color Dimension Image BorderLayout)
     (javax.swing JPanel JFrame ImageIcon JButton JLabel JTextField JOptionPane Icon)
     (java.awt.event ActionListener MouseListener MouseMotionListener)
     javax.imageio.ImageIO
-    java.io.File)
+    java.io.File
+    java.lang.Math)
   (:require [clojure.java.io :as io]))
 
 (def img-url (io/resource "gameboard.png"))
 
 (defn piece-url 
-  [piece]
-  (io/resource (str "p" (piece-id piece) "e.png")))
+  [piece-id]
+  (io/resource (str "p" piece-id "e.png")))
 
 ; (def piece-images
 ;   {:p0 })
@@ -31,28 +35,34 @@
     (.setSize (Dimension. 800 600))
     (.setVisible true)))
 
-(defn get-x
-  []
-  nil)
-
-(defn get-y
-  []
-  nil)
-
-(defn get-chosen-piece []
-  nil)
 
 (defn get-name 
   [text-filed]
   (.getText text-filed))
 
+(defn coord-x [piece-id]
+  (+ (* (mod piece-id 4) 50) 520))
+
+(defn coord-y [piece-id]
+  (+ 135 (* (Math/round (Math/floor (/ piece-id 4))) 75)))
+
+(defn place-piece
+  [piece-id]
+  (doto (JButton. (ImageIcon. (piece-url piece-id)))
+    (.setBounds (coord-x piece-id) (coord-y piece-id) 50 75)
+    (.setBackground (Color. 241 221 196 255))
+    (.setBorderPainted false)))
+
+(defn unused-pieces-buttons
+  [{:keys [unused-pieces]}]
+  (map #(place-piece (piece-id %)) unused-pieces))
+
 (defn names-window []
   (let [panel (JPanel.)
         button (doto (JButton. (ImageIcon. (io/resource "p0e.png")))
-               ; (.setSize (Dimension. 50 75)))]
-                (.setBounds 520 135 50 75)
-                (.setBackground (Color. 241 221 196 255))
-                (.setBorderPainted false))]
+                 (.setBounds 520 135 50 75)
+                 (.setBackground (Color. 241 221 196 255))
+                 (.setBorderPainted false))]
         ; name-field1 (JTextField. "Player1" 20)
         ; name-field2 (JTextField. "Player2" 20)
         ; submit-button (JButton. "OK")
