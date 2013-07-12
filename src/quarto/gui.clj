@@ -58,7 +58,9 @@
   (map place-piece unused-pieces))
 
 (defn move-to-selected [event-source]
-  (Integer. (.getName event-source)))
+  (let [id (Integer. (.getName event-source))
+        moved-piece (get (map #(.id %) unused-pieces) id)]
+    (choose-piece-for-onother-player moved-piece)))
 
 (def choose-piece 
   (proxy [ActionListener] []
