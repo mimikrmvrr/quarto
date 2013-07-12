@@ -41,10 +41,10 @@
   (.getText text-filed))
 
 (defn coord-x [piece-id]
-  (+ (* (mod piece-id 4) 50) 520))
+  (+ (* (mod piece-id 4) 60) 520))
 
 (defn coord-y [piece-id]
-  (+ 135 (* (Math/round (Math/floor (/ piece-id 4))) 75)))
+  (+ 150 (* (Math/round (Math/floor (/ piece-id 4))) 75)))
 
 (defn place-piece
   [piece-id]
