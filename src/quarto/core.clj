@@ -1,6 +1,6 @@
 (ns quarto.core
   (:gen-class)
-  (:use [quarto.gui :only (start-game)]))
+  (:use [quarto.logics :only (start-game)]))
 
 
 (defn -main
