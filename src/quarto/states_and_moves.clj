@@ -1,5 +1,6 @@
 (ns quarto.states_and_moves
-  (:use quarto.board))
+  (:use quarto.board)
+  (:import (javax.swing JOptionPane)))
 
 (def max-moves (count all-pieces))
 
@@ -44,14 +45,26 @@
         (winning-combination? (columns board))
         (winning-combination? (diagonals board))))))
 
+
+(defn end 
+  [win?]
+  (if win? 
+    (JOptionPane/showMessageDialog  nil, "Win! Start a new game?")
+    (JOptionPane/showMessageDialog  nil, "Game over without winner!won! Start a new game?")))
+
 (defn all-filled? []
   (let [board (get @state :board)]
     (not-any? nil? (flatten board))))
 
+(defn end? []
+  (cond 
+    (win?) (end true)
+    (all-filled?) (end false)
+    :else false))
 
-(defn get-x [] nil)
-(defn get-y [] nil)
-(defn get-chosen-piece [] nil)
+; (defn get-x [] nil)
+; (defn get-y [] nil)
+; (defn get-chosen-piece [] nil)
 
 
 ;;;????????whatttt

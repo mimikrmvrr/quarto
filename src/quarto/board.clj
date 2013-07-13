@@ -1,4 +1,5 @@
-(ns quarto.board)
+(ns quarto.board
+  (:import java.lang.Math))
 
 ;==========pieces=======
 (defrecord Piece[color shape size holed id])
@@ -60,3 +61,13 @@
   [pieces]
   (and (not-any? nil? pieces)
        (seq (common-properties pieces))))
+
+;=============places=======
+(defn places-x [id]
+  (mod id 4))
+
+(defn places-y [id]
+  (Math/round (Math/floor (/ id 4))))
+
+(def empty-places 
+  (atom (vec (range 16))))

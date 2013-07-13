@@ -22,11 +22,12 @@
 (defn start-game []
 	(window))
 
-(defn end 
-  [win? winner]
-  (if win? 
-    (.setText message-label (str (name winner) " won!")
-    (.settext message-label "Game over without winner!"))))
+; (defn end 
+;   [win? winner]
+;   (if win? 
+;   	(JOptionPane/showMessageDialog  nil, (str (name winner) " won! Start a new game?"))
+;   	(JOptionPane/showMessageDialog  nil, "Game over without winner!won! Start a new game?")))
+
 
 ; (defn play-game []
 ;   (loop [current-player :player1
