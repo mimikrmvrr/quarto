@@ -31,23 +31,16 @@
 
 (def panel 
   (doto (JPanel.)
-     (.add message-label)))
+    (.add message-label)))
 
 (def frame 
   (doto (JFrame. "Quarto Game")
-     (.add panel BorderLayout/NORTH)
-     (.add game-panel BorderLayout/CENTER)      
-     (.pack)
-     (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
-     (.setVisible true)
-     (.setSize (Dimension. 830 555))))
-
-
-; (defn run [] 
-;   (doto (JFrame. "Quarto Game")
-;     (.setContentPane game-panel)
-;     (.setSize (Dimension. 800 600))
-;     (.setVisible true)))
+    (.add panel BorderLayout/NORTH)
+    (.add game-panel BorderLayout/CENTER)      
+    (.pack)
+    (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
+    (.setVisible true)
+    (.setSize (Dimension. 830 555))))
 
 (defn coord-x [id]
   (+ (* (mod id 4) 60) 520))
@@ -60,8 +53,6 @@
   (doto (JLabel. (ImageIcon. (piece-url piece)))
     (.setBounds 640 70 40 55)
     (.setVisible true)))
-    ; (.setBackground (Color. 241 221 196 255))
-    ; (.setBorderPainted false)))
 
 (defn disable-button [button]
     (do
@@ -74,20 +65,14 @@
         coincidence-coll (vec (filter #(= id (.id %)) unused))
         moved-piece (coincidence-coll 0)]
     (do ;(prn moved-piece)
-        (disable-button event-source)
-        (select-piece moved-piece)
-        ; (prn moved-piece)
-        ; (prn (get @state :current-piece))
-        ; (for [button unused-pieces-buttons]
-        ;   (.removeActionListener button choose-piece))
-        ; (for [place empty-places-buttons]
-        ;   (.addActionListener button choose-place))
-        (.. frame getContentPane (add (select-piece-icon moved-piece))))))
+      (disable-button event-source)
+      (select-piece moved-piece)
+      (.. frame getContentPane (add (select-piece-icon moved-piece))))))
         ;(prn "ok"))))
 
 (defn img-selected-piece 
-  [x y]
-  (doto (JLabel. (ImageIcon. (piece-url (get @state :current-piece))))
+  [piece x y]
+  (doto (JLabel. (ImageIcon. (piece-url piece)))
     (.setBounds x y 50 75)
     (.setVisible true)))
 
@@ -100,18 +85,14 @@
 (defn set-piece [event-source]
   (let [id (Integer. (.getName event-source))
         place-x (places-x id)
-        place-y (places-y id)]
-    
-    (put-piece (get @state :current-piece) place-x place-y)
+        place-y (places-y id)
+        piece (get @state :current-piece)]    
+    (do 
+      (put-piece piece place-x place-y)
     ;(disable-button select-piece-button)
-    (swap! empty-places #(disj (set %) id))
-    (end?)
-    ;   (do 
-    ;     (for [button unused-pieces-buttons]
-    ;       (.addActionListener button choose-piece))
-    ;     (for [place empty-places-buttons]
-    ;       (.removeActionListener place choose-place))))
-    (.. frame getContentPane (add (img-selected-piece place-x place-y)))))
+      (swap! empty-places #(disj (set %) id))
+      (.. frame getContentPane (add (img-selected-piece piece place-x place-y)))
+      (end?))))
 
 (def choose-piece 
   (proxy [ActionListener] []
@@ -156,7 +137,7 @@
 (def unused-pieces-buttons 
   (map place-piece (get @state :unused-pieces)))
 
-(defn window []
+(defn start-window []
   (let [all-buttons (vec (concat empty-places-buttons unused-pieces-buttons))]
     (for [button all-buttons]
       (.. frame getContentPane (add button)))))
