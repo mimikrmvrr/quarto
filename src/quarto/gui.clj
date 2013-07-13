@@ -157,15 +157,6 @@
   (map place-piece (get @state :unused-pieces)))
 
 (defn window []
-  (let [
-        ; button (doto (JButton. (ImageIcon. (io/resource "p0e.png")))
-        ;          (.setBounds 520 135 50 75)
-        ;          (.setBackground (Color. 241 221 196 255))
-        ;          (.setBorderPainted false))
-        ]
-    (if-not (nil? selected-piece)
-      (.. frame getContentPane (add (select-piece-button selected-piece))))
-    (for [piece-button unused-pieces-buttons]
-      (.. frame getContentPane (add piece-button)))
-    (for [place empty-places-buttons]
-      (.. frame getContentPane (add place)))))
+  (let [all-buttons (vec (concat empty-places-buttons unused-pieces-buttons))]
+    (for [button all-buttons]
+      (.. frame getContentPane (add button)))))
