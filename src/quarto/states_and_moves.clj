@@ -59,8 +59,7 @@
 (defn end? []
   (cond 
     (win?) (end true)
-    (all-filled?) (end false)
-    :else false))
+    (all-filled?) (end false)))
 
 ; (defn get-x [] nil)
 ; (defn get-y [] nil)
